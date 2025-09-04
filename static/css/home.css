@@ -1,16 +1,4 @@
-
-h1 {
-	font-size: 1.5em;
-}
-
-h2 {
-	font-size: 1.25em;
-}
-
-
-/* Reset default margins and padding */
 * {
-  font-family: Sans-Serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -18,74 +6,96 @@ h2 {
 
 /* Page-level styling to match xAI's dark, space-themed background */
 body {
-  background-color: #121213; /* Dark almost-black background, similar to xAI */
+  font-family: sans-serif;
+  background-color: #151532; /* Dark almost-black background, similar to xAI */
   color: #FFFFFF; /* White text for readability */
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; /* Modern sans-serif font, similar to xAI */
   line-height: 1.6;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
+  min-width: 100vw;
+  padding: 10px;
 }
 
-/* Container for the chart canvas */
-.chart-container {
-  background-color: #1A1A1C; /* Slightly lighter dark shade for contrast, inspired by xAI panels */
-  border-radius: 12px; /* Rounded corners for a modern look */
-  padding: 20px;
-  max-width: 800px; /* Constrain width for readability */
-  width: 100%;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
-  margin: 20px auto;
+.header_buttons {
+    margin-left: 20px;
+    margin-right: 20px;
+    height:50px;
+    outline: 0;
+    display: inline-block;
+    border: 0;
+    cursor: pointer;
+    background: #151532;
+    color: #FFFFFF;
+    border-radius: 8px;
+    padding: 14px 24px 16px;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+    transition: transform 200ms;
+}
+.header_buttons:hover {
+    transform: translateY(-2px);
+    background: #303059;
 }
 
-/* Canvas styling */
-canvas {
-  max-width: 100%; /* Ensure canvas is responsive */
-  height: auto;
-  display: block; /* Remove inline-block spacing */
-  border-radius: 8px; /* Slight rounding to match container */
+#header {
+    display: flex;
+    flex-direction: row;
+    height: 6vh;
 }
 
-/* Headings and text */
-h1, h2, h3 {
-  color: #FFFFFF; /* White for headings */
-  margin-bottom: 16px;
+#buttonContainer{
+    display:flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
 }
 
-p {
-  color: #D1D5DB; /* Light gray for secondary text, inspired by xAI’s muted tones */
+#bottombar{
+    display:flex;
+    flex-direction: row;
+    height: 94vh;
+    justify-content: space-between;
+    align-items: center;
 }
 
-/* Accent buttons or interactive elements */
-button, a {
-  background-color: #1E40AF; /* Blue accent inspired by xAI’s branding */
-  color: #FFFFFF;
-  padding: 10px 20px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 500;
-  transition: background-color 0.3s ease;
+#leftbar{
+    width:40vw;
+    justify-content: center;
+    text-align: center;
 }
 
-button:hover, a:hover {
-  background-color: #3B82F6; /* Lighter blue on hover for interactivity */
+#rightbar{
+    display:flex;
+    flex-direction: column;
+    width:60vw;
+    height:100%;
+    justify-content: center;
+    text-align: center;
 }
 
-/* Responsive design for smaller screens */
-@media (max-width: 600px) {
-  .chart-container {
-    padding: 15px;
-    margin: 10px;
-  }
+#welcome_txt{
+    font-size: 30px;
+    margin-bottom: 50px;
+}
 
-  canvas {
-    max-height: 300px; /* Limit height on small screens */
-  }
+#balance_txt{
+    font-size: 60px;
+}
 
-  body {
-    padding: 10px;
-  }
+#pnl_txt{
+    font-size: 30px;
+}
+
+.title_txt{
+    font-size: 30px;
+}
+
+.fields{
+    background-color: #303059;
+    border-radius: 20px;
+    width: 80%;
+    margin:auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height: 35%;
 }
