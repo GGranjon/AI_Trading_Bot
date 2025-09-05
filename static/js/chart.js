@@ -1,5 +1,10 @@
-var barCount = 60;
-var initialDateStr = new Date().toUTCString();
+var barCount = 120;
+//var initialDateStr = new Date().toUTCString();
+
+var data_id = document.getElementById('data_date').value
+var [year, month, day, hour, minute] = data_id.split("-").map(Number);
+var dateObj = new Date(year, month - 1, day, hour, minute);
+var initialDateStr = dateObj.toUTCString();
 
 var ctx = document.getElementById('chart').getContext('2d');
 ctx.canvas.width = 1000;
@@ -8,7 +13,7 @@ ctx.canvas.height = 250;
 var barData = new Array(barCount);
 var lineData = new Array(barCount);
 
-getRandomData(initialDateStr);
+getInitData(initialDateStr);
 
 candlestick_chart = {
       label: 'Bitcoin chart',
@@ -32,11 +37,7 @@ function randomNumber(min, max) {
   return Math.random() * (max - min) + min;
 }
 
-function randomBar(target, index, date, lastClose) {
-  var open = +randomNumber(lastClose * 0.95, lastClose * 1.05).toFixed(2);
-  var close = +randomNumber(open * 0.95, open * 1.05).toFixed(2);
-  var high = +randomNumber(Math.max(open, close), Math.max(open, close) * 1.1).toFixed(2);
-  var low = +randomNumber(Math.min(open, close) * 0.9, Math.min(open, close)).toFixed(2);
+function initBar(target, index, date) {
 
   if (!target[index]) {
     target[index] = {};
@@ -44,27 +45,44 @@ function randomBar(target, index, date, lastClose) {
 
   Object.assign(target[index], {
     x: date.valueOf(),
-    o: open,
-    h: high,
-    l: low,
-    c: close
+    o: 0,
+    h: 0,
+    l: 0,
+    c: 0
   });
 
 }
 
-function getRandomData(dateStr) {
+function getInitData(dateStr) {
   var date = luxon.DateTime.fromRFC2822(dateStr);
 
   for (let i = 0; i < barData.length;) {
-    date = date.plus({days: 1});
-    if (date.weekday <= 5) {
-      randomBar(barData, i, date, i === 0 ? 30 : barData[i - 1].c);
-      lineData[i] = {x: barData[i].x, y: barData[i].c};
-      i++;
-    }
+    initBar(barData, i, date);
+    lineData[i] = {x: barData[i].x, y: barData[i].c};
+    date = date.plus({minute: 1});
+    i++;
   }
 }
 
+function updateData(data, dateStr) {
+  var date = luxon.DateTime.fromRFC2822(dateStr);
+
+  for (let i = 0; i < barData.length;) {
+    if (!barData[i]) {
+      barData[i] = {};
+    }
+    Object.assign(barData[i], {
+      x: date.valueOf(),
+      o: data["o"][i],
+      h: data["h"][i],
+      l: data["l"][i],
+      c: data["c"][i]
+    });
+    lineData[i] = {x: barData[i].x, y: barData[i].c};
+    date = date.plus({minute: 1});
+    i++;
+  }
+}
 var update = function() {
   var dataset = chart.config.data.datasets[0];
 
@@ -107,10 +125,28 @@ var update = function() {
 
   chart.update();
 };
-
+update();
 [...document.getElementsByTagName('select')].forEach(element => element.addEventListener('change', update));
 
-document.getElementById('randomizeData').addEventListener('click', function() {
-  getRandomData(initialDateStr, barData);
+document.getElementById('loadData').addEventListener('click',async function() {
+  const data = await loadData();
+  var data_id = document.getElementById('data_date').value
+  var [year, month, day, hour, minute] = data_id.split("-").map(Number);
+  var dateObj = new Date(year, month - 1, day, hour, minute);
+  var DateStr = dateObj.toUTCString();
+  updateData(data, DateStr);
   update();
 });
+
+async function loadData() {
+    var data_id = document.getElementById('data_date').value
+    const response = await fetch("/get_data?timestamp="+data_id);
+    const data = await response.json();
+    return data
+}
+
+document.addEventListener("DOMContentLoaded", async function() {
+      const data = await loadData();
+      updateData(data, initialDateStr);
+      update()
+    });

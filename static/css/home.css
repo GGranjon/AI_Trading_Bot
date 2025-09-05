@@ -91,6 +91,8 @@ body {
 }
 
 .fields{
+    display: flex;
+    flex-direction: column;
     background-color: #303059;
     border-radius: 20px;
     width: 80%;

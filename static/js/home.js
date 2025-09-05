@@ -1,14 +1,19 @@
-const buttons = ["Wallet", "Market", "Bots"];
+const buttons = [["Wallet","/wallet"], ["Market","/markets"], ["Bots","/bots"]];
 
 function renderButtons() {
   const container = document.getElementById('buttonContainer');
   container.innerHTML = ''; // Clear existing buttons
   buttons.forEach(buttonText => {
+    const form = document.createElement('form');
+    form.action = buttonText[1]
+    form.method = "post"
     const button = document.createElement('button');
-    button.textContent = buttonText;
-    button.id = "button_"+buttonText.toLowerCase()
+    button.type = "submit"
+    form.appendChild(button)
+    button.textContent = buttonText[0];
+    button.id = "button_"+buttonText[0].toLowerCase()
     button.className = "header_buttons"
-    container.appendChild(button);
+    container.appendChild(form);
   });
 }
 
